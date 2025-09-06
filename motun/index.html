@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Simulated Biometric Email Login Demo</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+  }
+  .card {
+    background: rgba(255 255 255 / 0.15);
+    padding: 2rem;
+    border-radius: 12px;
+    width: 320px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+    text-align: center;
+  }
+  input[type="email"] {
+    width: 100%;
+    padding: 0.5rem;
+    border-radius: 6px;
+    border: none;
+    margin-bottom: 1rem;
+    font-size: 1rem;
+  }
+  button {
+    width: 100%;
+    padding: 0.75rem;
+    border-radius: 6px;
+    border: none;
+    background: linear-gradient(45deg, #ffa500, #ff6347);
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    margin-bottom: 0.5rem;
+    font-size: 1rem;
+  }
+  button:disabled {
+    background: gray;
+    cursor: not-allowed;
+  }
+  #status {
+    margin-top: 1rem;
+    min-height: 1.5rem;
+  }
+</style>
+</head>
+<body>
+  <div class="card">
+    <h2>Simulated Biometric Email Login</h2>
+    <form id="emailForm">
+      <input type="email" id="email" placeholder="Enter your email" required />
+      <button type="submit">Next</button>
+    </form>
+    <div id="biometricSection" style="display:none;">
+      <p>Simulate biometric authentication:</p>
+      <button id="registerBio">Register Biometric</button>
+      <button id="loginBio" disabled>Login with Biometric</button>
+    </div>
+    <div id="status"></div>
+  </div>
+
+<script>
+  const emailForm = document.getElementById('emailForm');
+  const biometricSection = document.getElementById('biometricSection');
+  const registerBtn = document.getElementById('registerBio');
+  const loginBtn = document.getElementById('loginBio');
+  const status = document.getElementById('status');
+
+  let email = '';
+  let biometricRegistered = false;
+
+  emailForm.addEventListener('submit', e => {
+    e.preventDefault();
+    email = document.getElementById('email').value.trim();
+    if (email) {
+      emailForm.style.display = 'none';
+      biometricSection.style.display = 'block';
+      status.textContent = `Email set to: ${email}`;
+    }
+  });
+
+  registerBtn.addEventListener('click', () => {
+    // Simulate biometric registration with a confirm dialog
+    if (confirm('Simulate biometric registration? Click OK to register.')) {
+      biometricRegistered = true;
+      status.textContent = 'Biometric registered successfully!';
+      loginBtn.disabled = false;
+    } else {
+      status.textContent = 'Biometric registration cancelled.';
+    }
+  });
+
+  loginBtn.addEventListener('click', () => {
+    if (!biometricRegistered) {
+      status.textContent = 'Please register biometric first.';
+      return;
+    }
+    // Simulate biometric authentication with confirm dialog
+    if (confirm('Simulate biometric authentication? Click OK to authenticate.')) {
+      status.textContent = `Authentication successful! Welcome, ${email}`;
+      setTimeout(() => alert('Logged in! Redirecting to inbox...'), 500);
+    } else {
+      status.textContent = 'Authentication failed or cancelled.';
+    }
+  });
+</script>
+</body>
+</html>
